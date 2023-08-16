@@ -1,67 +1,62 @@
-name: Terraform
+name: Terraform AWS Workflow
 
 on:
   workflow_call:
   workflow_dispatch:
-      # Inputs the workflow accepts.
+    # Inputs the workflow accepts.
     inputs:
       tfpath:
         description: 'TF File Path'     
         required: false
         default: 'iac'
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  plan:
-    name: Terraform Plan
+  tf_code_check:
+    name: Terraform Validation and Build
     runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Install Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: latest
-    - name: Set up AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-    - name: Configure Cloudflare API Token
-      run: echo "CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
-    - name: Configure Cloudflare Zone ID
-      run: echo "CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
-    - name: Terraform Init
-      run: terraform init
-      working-directory: ${{ github.event.inputs.tfpath }}
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: ${{ github.event.inputs.tfpath }}
 
-  apply:
-    name: Terraform Apply
-    runs-on: ubuntu-latest
+    if:  ${{ inputs.tfpath }} 
     steps:
-    - uses: actions/checkout@v2
-    - name: Install Terraform
-      uses: hashicorp/setup-terraform@v1
+    - name: Checkout tf code in runner environment
+      uses: actions/checkout@v3.5.2
+
+    - name: Configure AWS Credentials Action For GitHub Actions
+      uses: aws-actions/configure-aws-credentials@v2
       with:
-        terraform_version: latest
-    - name: Set up AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
+    
     - name: Configure Cloudflare API Token
       run: echo "CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
+    
     - name: Configure Cloudflare Zone ID
       run: echo "CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
-    - name: Run Terraform Apply
-      run: terraform apply -auto-approve
+
+    - name: Setup Terraform CLI
+      uses: hashicorp/setup-terraform@v2.0.2
+
+    - name: Terraform init and validate
+      run: |
+        echo `pwd`
+        echo "tfpath ${{ github.event.inputs.tfpath }}"
+        echo "** Running Terraform Init**"
+        terraform init
+        
+        echo "** Running Terraform Validate**"
+        terraform validate
+      working-directory: ${{ github.event.inputs.tfpath }}
+    - name: Terraform plan and apply
+      run: |
+        echo `pwd`
+        echo "tfpath ${{ github.event.inputs.tfpath }}"        
+        echo "** Running Terraform Plan**"
+        terraform plan
+        
+        echo "** Running Terraform Apply**"
+        terraform apply -auto-approve
+      working-directory: ${{ github.event.inputs.tfpath }}
