@@ -29,11 +29,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
         
-      - name: Navigate to Terraform directory
-        run: |
-          cd iac/
-          pwd
-          ls -la iac
 
       - name: Configure Cloudflare API Token
         run: echo "CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
@@ -42,7 +37,7 @@ jobs:
         run: echo "CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -chdir=iac
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
