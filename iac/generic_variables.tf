@@ -22,6 +22,13 @@ variable "business_division" {
 variable "domain_names" {
   description = "value of the domain names"
   type        = list(string)
-  default     = ["ajharresume.com", "www.ajharresume.com", "cloud.ajharresume.com", "lambda.ajharresume.com"]
-  
+  default     = ["ajharresume.com", "www.ajharresume.com", "cloud.ajharresume.com", "lambda.ajharresume.com"] 
+}
+
+variable "cloudflare_api_token" {
+  description = "Cloudflare API Token"
+}
+
+variable "cloudflare_zone_id" {
+  description = "Cloudflare Zone ID"
 }
