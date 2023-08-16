@@ -13,7 +13,8 @@ jobs:
     name: Terraform Plan
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v1
       with:
@@ -29,7 +30,9 @@ jobs:
     - name: Configure Cloudflare Zone ID
       run: echo "CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
     - name: Run Terraform Plan
-      run: terraform plan
+      run: terraform init
+           terraform plan
+
   apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
