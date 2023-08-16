@@ -29,6 +29,8 @@ jobs:
       run: echo "CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
     - name: Configure Cloudflare Zone ID
       run: echo "CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
+    - name: Navigate to root directory and then iac
+      run: cd $GITHUB_WORKSPACE/iac
     - name: Terraform Init
       run: terraform init
     - name: Terraform Plan
