@@ -31,8 +31,9 @@ jobs:
         
       - name: Navigate to Terraform directory
         run: |
-          cd iac
+          cd iac/
           pwd
+          ls -la iac
 
       - name: Configure Cloudflare API Token
         run: echo "CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
