@@ -2,3 +2,4 @@
 terraform.tfst*
 .terraform*
 builds/
+secrets.tf

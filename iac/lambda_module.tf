@@ -21,8 +21,14 @@ module "lambda_function" {
   create_lambda_function_url = true
 
   cors = {
-    allow_origins = ["https://ajharresume.com", "https://www.ajharresume.com"]
+    allow_origins = formatlist("https://%s", var.domain_names)
   }
 
   tags = local.common_tags
+}
+
+output "lambda_function_url" {
+  description = "value of the lambda function url"
+  value       = module.lambda_function.lambda_function_url
+  
 }
