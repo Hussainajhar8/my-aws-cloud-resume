@@ -1,6 +1,14 @@
 name: Terraform
 
 on:
+  workflow_call:
+  workflow_dispatch:
+      # Inputs the workflow accepts.
+    inputs:
+      tfpath:
+        description: 'TF File Path'     
+        required: false
+        default: 'iac'
   push:
     branches:
       - main
@@ -29,12 +37,12 @@ jobs:
       run: echo "CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
     - name: Configure Cloudflare Zone ID
       run: echo "CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
-    - name: Navigate to root directory and then iac
-      run: cd $GITHUB_WORKSPACE/iac
     - name: Terraform Init
       run: terraform init
+      working-directory: ${{ github.event.inputs.tfpath }}
     - name: Terraform Plan
       run: terraform plan
+      working-directory: ${{ github.event.inputs.tfpath }}
 
   apply:
     name: Terraform Apply
