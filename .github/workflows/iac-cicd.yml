@@ -31,14 +31,11 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
     
-    - name: Configure Cloudflare API Token
-      run: echo "CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
-    
-    - name: Configure Cloudflare Zone ID
-      run: echo "CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
-    
-    - name: Configure Cloudflare Account ID
-      run: echo "CLOUDFLARE_ACCOUNT_ID=${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" >> $GITHUB_ENV
+    - name: Configure Terraform Environment Variables
+      run: |
+          echo "TF_VAR_cloudflare_api_token=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
+          echo "TF_VAR_cloudflare_zone_id=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_cloudflare_account_id=${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" >> $GITHUB_ENV
 
     - name: Setup Terraform CLI
       uses: hashicorp/setup-terraform@v2.0.2
