@@ -36,6 +36,9 @@ jobs:
     
     - name: Configure Cloudflare Zone ID
       run: echo "CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
+    
+    - name: Configure Cloudflare Account ID
+      run: echo "CLOUDFLARE_ACCOUNT_ID=${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" >> $GITHUB_ENV
 
     - name: Setup Terraform CLI
       uses: hashicorp/setup-terraform@v2.0.2

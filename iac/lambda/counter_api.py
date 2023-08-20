@@ -3,7 +3,7 @@ import boto3
 
 dynamodb = boto3.resource('dynamodb')
 
-table = dynamodb.Table('cloud_resume_counter_table')
+table = dynamodb.Table('cloud_resume_counter_table_terraform')
 
 
 def lambda_handler(event, context):

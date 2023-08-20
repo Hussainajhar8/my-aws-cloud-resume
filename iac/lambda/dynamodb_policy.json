@@ -63,7 +63,7 @@
                 "kinesis:DescribeStreamSummary"
             ],
             "Effect": "Allow",
-            "Resource": "arn:aws:dynamodb:*:*:table/cloud_resume_counter_table"
+            "Resource": "arn:aws:dynamodb:*:*:table/*"
         },
         {
             "Action": "cloudwatch:GetInsightRuleReport",

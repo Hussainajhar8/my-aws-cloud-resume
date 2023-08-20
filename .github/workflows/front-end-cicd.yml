@@ -1,9 +1,10 @@
 name : Upload website to S3
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run: # In this case, the event is triggered when a workflow run is completed
+    workflows: ["Terraform AWS Workflow"]  # Name of my Terraform workflow
+    types:
+      - completed
 
 jobs:
   deploy:

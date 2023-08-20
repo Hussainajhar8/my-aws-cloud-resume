@@ -32,3 +32,7 @@ variable "cloudflare_api_token" {
 variable "cloudflare_zone_id" {
   description = "Cloudflare Zone ID"
 }
+
+variable "cloudflare_account_id" {
+  description = "Cloudflare account ID"
+}
