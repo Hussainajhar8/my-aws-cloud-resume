@@ -1,11 +1,6 @@
 name: Terraform AWS Workflow
 
 on:
-  workflow_run:
-    workflows: ["Terraform Dependency Provisioning"]
-    types:
-      - completed
-
   workflow_call:
   workflow_dispatch:
     inputs:
@@ -13,7 +8,6 @@ on:
         description: 'TF File Path'     
         required: false
         default: 'iac'
-
   push:
     branches: [ main ]
   pull_request:
@@ -55,6 +49,18 @@ jobs:
         echo "** Running Terraform Validate**"
         terraform validate
       working-directory: ${{ github.event.inputs.tfpath }}
+    - name: Terraform dependency provisioning
+      run: |
+        echo `pwd`
+        echo "tfpath ${{ github.event.inputs.tfpath }}"        
+        echo "** Provisioning SSL cert **"
+        terraform apply -target="module.acm" -auto-approve
+        
+        echo "** Validating SSL cert **"
+        terraform apply -target="module.zone" -auto-approve
+      working-directory: ${{ github.event.inputs.tfpath }}
+    - name: Wait for SSL cert to be issued
+      run: sleep 600 
     - name: Terraform plan and apply
       run: |
         echo `pwd`
