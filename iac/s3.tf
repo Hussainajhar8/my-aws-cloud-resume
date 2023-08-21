@@ -30,14 +30,14 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
   }
 }
 # No longer needed since I have a seperate ci/cd pipeline for the front end
-resource "aws_s3_object" "upload" {
-  depends_on = [module.s3_bucket]
-  for_each   = fileset("../front_end/", "**")
-  bucket     = module.s3_bucket.s3_bucket_id
-  key        = each.value
-  source     = "../front_end/${each.value}"
-  etag       = filemd5("../front_end/${each.value}")
-}
+# resource "aws_s3_object" "upload" {
+#   depends_on = [module.s3_bucket]
+#   for_each   = fileset("../front_end/", "**")
+#   bucket     = module.s3_bucket.s3_bucket_id
+#   key        = each.value
+#   source     = "../front_end/${each.value}"
+#   etag       = filemd5("../front_end/${each.value}")
+# }
 
 resource "aws_s3_bucket_policy" "cloudfront_s3_bucket_policy" {
   depends_on = [aws_cloudfront_distribution.s3_distribution , module.s3_bucket]
