@@ -68,6 +68,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
     
+      - name: Get ACM Certificate ARN
+        id: get_acm_arn
+        run: echo "::set-output name=arn::$(terraform output -raw module.acm.acm_certificate_arn)"
+
       - name: Poll for ACM Certificate Issuance
         run: |
           # Polling interval in seconds
