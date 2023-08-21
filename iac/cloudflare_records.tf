@@ -13,6 +13,7 @@ module "zone" {
       type  = option.resource_record_type
       value = option.resource_record_value
       ttl   = 3600
+      count = var.existing_records[option.resource_record_name] ? 0 : 1
     }
   ]
 }
