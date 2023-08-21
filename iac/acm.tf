@@ -16,7 +16,7 @@ module "acm" {
 
   create_route53_records  = false
 
-  wait_for_validation = true
+  wait_for_validation = false
 
   # validation_record_fqdns = 
 

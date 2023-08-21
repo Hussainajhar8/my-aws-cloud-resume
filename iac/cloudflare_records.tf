@@ -1,7 +1,6 @@
 # Creates records for DNS validation
 
 module "zone" {
-  depends_on = [ module.acm ]
   source  = "cloudposse/zone/cloudflare"
   version = "0.5.1"
   account_id = var.cloudflare_account_id

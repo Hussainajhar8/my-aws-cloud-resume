@@ -20,7 +20,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
     target_origin_id = module.s3_bucket.s3_bucket_bucket_regional_domain_name
-    cache_policy_id = data.aws_cloudfront_cache_policy.default.id
+    cache_policy_id = data.aws_cloudfront_cache_policy.optimized.id
     viewer_protocol_policy = "redirect-to-https"
     compress            = true
   }
@@ -52,9 +52,8 @@ resource "aws_cloudfront_origin_access_control" "default" {
   signing_protocol                  = "sigv4"
 }
 
-data "aws_cloudfront_cache_policy" "default" {
-  #name = "Managed-CachingOptimized"
-  name = "Managed-CachingDisabled"
+data "aws_cloudfront_cache_policy" "optimized" {
+  name = "Managed-CachingOptimized"
 }
 
 

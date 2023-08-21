@@ -50,13 +50,76 @@ jobs:
         echo "** Running Terraform Validate**"
         terraform validate
       working-directory: ${{ github.event.inputs.tfpath }}
-    - name: Terraform plan and apply
+    - name: Terraform dependency provisioning
       run: |
         echo `pwd`
         echo "tfpath ${{ github.event.inputs.tfpath }}"        
-        echo "** Running Terraform Plan**"
-        terraform plan
+        echo "** Provisioning SSL cert **"
+        terraform apply -target="module.acm" -auto-approve
         
-        echo "** Running Terraform Apply**"
-        terraform apply -auto-approve
+        echo "** Validating SSL cert **"
+        terraform apply -target="module.zone" -auto-approve
       working-directory: ${{ github.event.inputs.tfpath }}
+  wait_for_ssl:
+    name: Wait for SSL Certificate Issuance
+    runs-on: ubuntu-latest
+    needs: [tf_code_check]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+    
+      - name: Poll for ACM Certificate Issuance
+        run: |
+          # Polling interval in seconds
+          poll_interval=300  # Adjust as needed
+          
+           while true; do
+             # Query ACM certificate description
+             certificate_status=$(aws acm describe-certificate --certificate-arn ${{ steps.get_acm_arn.outputs.arn }} --query 'Certificate.Status' --output text)
+             
+             if [ "$certificate_status" == "ISSUED" ]; then
+              # Certificate is issued, set an environment variable
+               echo "CERTIFICATE_ISSUED=true" >> $GITHUB_ENV
+               break
+             else
+              echo "Certificate not yet issued, waiting..."
+              sleep $poll_interval
+            fi
+          done
+  final_terraform:
+    name: Final Terraform Plan and Apply
+    runs-on: ubuntu-latest
+    needs: [wait_for_ssl]
+    steps:
+      - name: Checkout tf code in runner environment
+        uses: actions/checkout@v3.5.2
+
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v2.0.2
+
+      - name: Terraform init and validate
+        run: |
+          echo `pwd`
+          echo "tfpath ${{ github.event.inputs.tfpath }}"
+          echo "** Running Terraform Init**"
+          terraform init
+          
+          echo "** Running Terraform Validate**"
+          terraform validate
+        working-directory: ${{ github.event.inputs.tfpath }}
+      
+      - name: Conditional Terraform Plan and Apply
+        run: |
+          echo `pwd`
+          echo "tfpath ${{ github.event.inputs.tfpath }}"
+          echo "** Running Terraform Plan**"
+          terraform plan
+          
+          # Check if the SSL certificate is issued
+          if [ "$CERTIFICATE_ISSUED" == "true" ]; then
+            echo "** Running Terraform Apply**"
+            terraform apply -auto-approve
+          else
+            echo "Waiting for SSL certificate to be issued..."
+          fi
+        working-directory: ${{ github.event.inputs.tfpath }}

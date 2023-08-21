@@ -52,6 +52,11 @@ data "aws_cloudfront_origin_request_policy" "default" {
   name = "Managed-AllViewer"
 }
 
+data "aws_cloudfront_cache_policy" "default" {
+  #name = "Managed-CachingOptimized"
+  name = "Managed-CachingDisabled"
+}
+
 # -------------------------------------------------------------------------------------------------- from cloudfront_module.tf (old)
 
 # module "cdn" {
