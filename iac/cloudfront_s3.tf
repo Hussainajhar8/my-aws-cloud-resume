@@ -40,7 +40,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     ssl_support_method = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
+
+  
+  # Create invalidation after deployment
+  provisioner "local-exec" {
+    command = "aws cloudfront create-invalidation --distribution-id ${self.id} --paths /static/assets/* "
+  }
 }
+
+
 
 # -------------------------------------------------------------------------------------------------- from cloudfront_module.tf
 

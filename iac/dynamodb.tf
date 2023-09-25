@@ -32,8 +32,13 @@ resource "aws_dynamodb_table_item" "id_item" {
   hash_key   = "id"
   item = jsonencode({
     id    = {"S": "1"},
-    views = {"N": "630"},
+    views = {"N": "1230"},
   })
+  lifecycle {
+    ignore_changes = [
+      item # Ignore changes to the item attribute only
+    ]
+  }
 }
 
 output "dynamodb_table_arn" {
