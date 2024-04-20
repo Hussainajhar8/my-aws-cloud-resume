@@ -9,6 +9,8 @@ module "acm" {
     aws = aws.us-east-1
   }
 
+  validation_method = "DNS"
+
   domain_name = var.domain_names[0]
   zone_id     = var.cloudflare_zone_id
 
