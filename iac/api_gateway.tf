@@ -1,5 +1,6 @@
 module "api_gateway" {
   source = "terraform-aws-modules/apigateway-v2/aws"
+  version = "2.1.0"
 
   name          = "terraform_lambda_api_gateway"
   protocol_type = "HTTP"

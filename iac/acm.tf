@@ -4,6 +4,7 @@ provider "aws" {
 
 module "acm" {
   source = "terraform-aws-modules/acm/aws"
+  version = "4.3.2"
 
   providers = {
     aws = aws.us-east-1

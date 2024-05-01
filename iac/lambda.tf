@@ -1,5 +1,6 @@
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
+  version = "6.8.0"
 
   function_name = "cloud_resume_api_terraform"
   description   = "api to get and modify visitor counter from dynamodb table"

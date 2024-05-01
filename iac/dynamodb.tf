@@ -1,6 +1,6 @@
 module "dynamodb_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
-
+  version = "3.3.0"
   name     = "cloud_resume_counter_table_terraform"
   hash_key = "id"
 
