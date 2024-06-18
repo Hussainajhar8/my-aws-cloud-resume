@@ -10,12 +10,13 @@ This is my attempt at the AWS Cloud Resume Challenge, showcasing my journey in b
 
 ![Architecture Diagram](/front_end/static/assets/images/readme/cloud_resume_architecture.png)
 
-**Services Used**:
+**Services and tools used**:
 
-- S3
-- AWS CloudFront
+- Amazon S3
+- Amazon CloudFront
 - Amazon Certificate Manager
 - AWS Lambda
+- API Gateway
 - Dynamo DB
 - GitHub Actions
 - Terraform
@@ -23,4 +24,5 @@ This is my attempt at the AWS Cloud Resume Challenge, showcasing my journey in b
 ## [Live Demo 🔗](https://ajharresume.com)
 
 ## Blog
+
 [My Cloud Resume Challenge Journey](https://medium.com/@hussainajhar8/my-cloud-resume-challenge-journey-building-a-fully-automated-portfolio-9b5802badb14)
