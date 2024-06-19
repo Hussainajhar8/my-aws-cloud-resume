@@ -16,8 +16,8 @@ This is my attempt at the AWS Cloud Resume Challenge, showcasing my journey in b
 - Amazon CloudFront - For content delivery.
 - Amazon Certificate Manager - To issue SSL certificates.
 - Cloudflare - To register domain and configure DNS records.
-- AWS Lambda - To create a visitor count api.
-- API Gateway - To act as HTTP gateway that triggers Lambda function
+- AWS Lambda - To create a visitor counter API.
+- API Gateway - To act as HTTP gateway that triggers the Lambda function
 - Dynamo DB - To store the visitor count.
 - Terraform - To create consistent and reproduceable deployments.
 - GitHub Actions - To automate CI/CD pipeline, ensuring changes are tested, built and deployed efficiently.
