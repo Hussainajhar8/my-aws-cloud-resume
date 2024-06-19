@@ -12,14 +12,15 @@ This is my attempt at the AWS Cloud Resume Challenge, showcasing my journey in b
 
 **Services and tools used**:
 
-- Amazon S3
-- Amazon CloudFront
-- Amazon Certificate Manager
-- AWS Lambda
-- API Gateway
-- Dynamo DB
-- GitHub Actions
-- Terraform
+- Amazon S3 - For static webhosting
+- Amazon CloudFront - For content delivery.
+- Amazon Certificate Manager - To issue SSL certificates.
+- Cloudflare - To register domain and configure DNS records.
+- AWS Lambda - To create a visitor count api.
+- API Gateway - To act as HTTP gateway that triggers Lambda function
+- Dynamo DB - To store the visitor count.
+- Terraform - To create consistent and reproduceable deployments.
+- GitHub Actions - To automate CI/CD pipeline, ensuring changes are tested, built and deployed efficiently.
 
 ## [Live Demo 🔗](https://ajharresume.com)
 
